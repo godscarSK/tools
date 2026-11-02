@@ -54,10 +54,8 @@
 </div>
 
 <script>
-async function checkSite() {
 
-    const statusElement = document.getElementById("status");
-    const timeElement = document.getElementById("time");
+async function checkSite() {
 
     try {
 
@@ -66,22 +64,23 @@ async function checkSite() {
             encodeURIComponent("https://www.sokker.org")
         );
 
+        console.log("Status:", response.status);
+
         if (response.ok) {
-            statusElement.textContent = "✅ FUNCIONANDO";
-            statusElement.className = "status online";
+            document.getElementById("status").innerHTML =
+                `✅ FUNCIONANDO (${response.status})`;
         } else {
-            statusElement.textContent = "❌ CAÍDO";
-            statusElement.className = "status offline";
+            document.getElementById("status").innerHTML =
+                `❌ ERROR (${response.status})`;
         }
 
-    } catch (error) {
-        statusElement.textContent = "❌ CAÍDO";
-        statusElement.className = "status offline";
-    }
+    } catch (err) {
 
-    timeElement.textContent =
-        "Última comprobación: " +
-        new Date().toLocaleString("es-ES");
+        console.error(err);
+
+        document.getElementById("status").innerHTML =
+            `❌ ${err.message}`;
+    }
 }
 
 checkSite();
